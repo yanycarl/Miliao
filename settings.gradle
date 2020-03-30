@@ -1,0 +1,2 @@
+include ':app', ':myui', ':base', ':message', ':account', ':network', ':phonebook', ':voice', ':router'
+rootProject.name='密聊'
