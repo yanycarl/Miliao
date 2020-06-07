@@ -20,15 +20,12 @@ import java.util.Objects;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageView mClose;
-    private TextView mTitle;
     private EditText mLoginUser;
     private EditText mLoginPass;
     private EditText mRegUser;
     private EditText mRegPass;
     private Button mLogin;
     private Button mReg;
-    private View mFunction;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,13 +33,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
         setContentView(R.layout.activity_login);
 
-        mClose = findViewById(R.id.close);
+        ImageView mClose = findViewById(R.id.close);
         mClose.setVisibility(View.INVISIBLE);
 
-        mFunction = findViewById(R.id.function);
+        View mFunction = findViewById(R.id.function);
         mFunction.setVisibility(View.GONE);
 
-        mTitle = findViewById(R.id.title);
+        TextView mTitle = findViewById(R.id.title);
 
         View login_part = findViewById(R.id.login_part);
         View reg_part = findViewById(R.id.reg_part);
@@ -52,15 +49,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mRegPass = reg_part.findViewById(R.id.login_input_pass);
         mLogin = login_part.findViewById(R.id.commit);
         mReg = reg_part.findViewById(R.id.commit);
-    }
-
-    @Override
-    protected void initViews() {
         mTitle.setText("登入您的账户");
         mReg.setText("立    即    注    册");
         mLogin.setText("现    在    登    入");
         mReg.setOnClickListener(this);
         mLogin.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initViews() {
     }
 
     @Override

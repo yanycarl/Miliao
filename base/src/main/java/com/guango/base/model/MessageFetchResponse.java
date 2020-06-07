@@ -27,10 +27,24 @@ public class MessageFetchResponse {
     @SerializedName("request")
     LinkedList<String> requests;
 
+    public LinkedList<String> getNewFriends() {
+        return newFriends;
+    }
+
+    @SerializedName("new_friends")
+    LinkedList<String> newFriends;
+
     public LinkedList<String> getVoiceRequests() {
         return voiceRequests;
     }
 
     @SerializedName("voice_request")
     LinkedList<String> voiceRequests;
+
+    public String getVersion() {
+        return version;
+    }
+
+    @SerializedName("version")
+    String version;
 }

@@ -6,15 +6,6 @@ import android.content.Context;
 
 public class GlobalInfo {
     @SuppressLint("CI_StaticFieldLeak")
-    static private Activity activity;
-
-    public static Activity getContext() {
-        return activity;
-    }
-
-    public static void setContext(Activity context) {
-        GlobalInfo.activity = context;
-    }
 
     public static DataCenter dataCenter;
 

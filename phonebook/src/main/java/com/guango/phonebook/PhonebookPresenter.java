@@ -50,29 +50,31 @@ public class PhonebookPresenter {
         PhoneBookFetcher.requestFriend(toWhom);
     }
 
-    void replyRequest(final String name, boolean status) {
+    void replyRequest(final String name, final boolean status) {
 
         PhoneBookFetcher.replyFriendRequest(name, status, new PhoneBookCallback() {
             @Override
             public void onGotReplyResult(boolean success) {
                 if(success) {
-                    LinkedList<UserInfo> linkedList = GlobalInfo.dataCenter.phonebook.getValue();
-                    for (UserInfo next : Objects.requireNonNull(linkedList)) {
-                        if (next.getName().equals(name)) {
-                            next.setType(UserInfo.CONTACT_TYPE.DONE);
+                    if(status) {
+                        LinkedList<UserInfo> linkedList = GlobalInfo.dataCenter.phonebook.getValue();
+                        for (UserInfo next : Objects.requireNonNull(linkedList)) {
+                            if (next.getName().equals(name)) {
+                                next.setType(UserInfo.CONTACT_TYPE.DONE);
+                            }
                         }
-                    }
-                    GlobalInfo.dataCenter.phonebook.setValue(linkedList);
-                }else{
-                    LinkedList<UserInfo> linkedList = GlobalInfo.dataCenter.phonebook.getValue();
-                    Iterator<UserInfo> iterator = Objects.requireNonNull(linkedList).iterator();
-                    while(iterator.hasNext()){
-                        UserInfo next = iterator.next();
-                        if(next.getName().equals(name)){
-                            iterator.remove();
+                        GlobalInfo.dataCenter.phonebook.setValue(linkedList);
+                    }else {
+                        LinkedList<UserInfo> linkedList = GlobalInfo.dataCenter.phonebook.getValue();
+                        Iterator<UserInfo> iterator = Objects.requireNonNull(linkedList).iterator();
+                        while (iterator.hasNext()) {
+                            UserInfo next = iterator.next();
+                            if (next.getName().equals(name)) {
+                                iterator.remove();
+                            }
                         }
+                        GlobalInfo.dataCenter.phonebook.setValue(linkedList);
                     }
-                    GlobalInfo.dataCenter.phonebook.setValue(linkedList);
                 }
             }
         });

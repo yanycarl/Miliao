@@ -1,5 +1,6 @@
 package com.guango.network.Fetcher;
 
+import android.content.pm.PackageManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,7 +18,13 @@ public class MessageFetcher {
 
     public static void fetchMessage(final MessageFetchCallback callback){
         MessageApi messageApi = RetrofitHelper.getRetrofit().create(MessageApi.class);
-        Call<MessageFetchResponse> call = messageApi.fetchInfo(GlobalInfo.myName);
+        int version = 0;
+        try {
+            version = GlobalInfo.getGlobalContext().getPackageManager().getPackageInfo(GlobalInfo.getGlobalContext().getPackageName(), 0).versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        Call<MessageFetchResponse> call = messageApi.fetchInfo(GlobalInfo.myName, version);
 
         call.enqueue(new Callback<MessageFetchResponse>() {
             @Override
@@ -41,7 +48,7 @@ public class MessageFetcher {
             public void onResponse(Call<MessageSendResponse> call, Response<MessageSendResponse> response) {
                 Log.d("yanyao -- sendAPi", response.toString());
                 if (response.code() != 200) {
-                    Toast.makeText(GlobalInfo.getContext(), "消息发送失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GlobalInfo.getGlobalContext(), "消息发送失败", Toast.LENGTH_SHORT).show();
                 } else {
                     callback.onMessageSent(toWhom, msg);
                 }
@@ -50,7 +57,7 @@ public class MessageFetcher {
             @Override
             public void onFailure(Call<MessageSendResponse> call, Throwable t) {
                 Log.d("yanyao -- sendAPi", t.toString());
-                Toast.makeText(GlobalInfo.getContext(), "消息发送失败", Toast.LENGTH_SHORT).show();
+                Toast.makeText(GlobalInfo.getGlobalContext(), "消息发送失败", Toast.LENGTH_SHORT).show();
             }
         });
     }

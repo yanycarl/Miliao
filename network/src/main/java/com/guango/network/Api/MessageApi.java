@@ -15,5 +15,6 @@ public interface MessageApi {
                                       @Query("msg") String msg);
 
     @GET("/message/fetch")
-    Call<MessageFetchResponse> fetchInfo(@Query("me") String myName);
+    Call<MessageFetchResponse> fetchInfo(@Query("me") String myName,
+                                         @Query("version") int versionCode);
 }

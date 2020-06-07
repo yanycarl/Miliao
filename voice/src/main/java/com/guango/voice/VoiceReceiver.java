@@ -20,6 +20,6 @@ public class VoiceReceiver extends BroadcastReceiver {
         Intent intent2 = new Intent(GlobalInfo.getGlobalContext(), VoiceActivity.class);
         intent2.putExtra("name", name);
         intent2.putExtra("type", 1);
-        GlobalInfo.getContext().startActivity(intent2);
+        GlobalInfo.getGlobalContext().startActivity(intent2);
     }
 }

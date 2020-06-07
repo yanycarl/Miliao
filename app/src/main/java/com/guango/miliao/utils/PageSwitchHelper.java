@@ -29,11 +29,11 @@ public class PageSwitchHelper {
 
             @Override
             public void jumpToMessageDetail(int index) {
-                Intent intent = new Intent(GlobalInfo.getContext(), MessageActivity.class);
+                Intent intent = new Intent(GlobalInfo.getGlobalContext(), MessageActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("group_id", index);
                 intent.putExtras(bundle);
-                GlobalInfo.getContext().startActivity(intent);
+                GlobalInfo.getGlobalContext().startActivity(intent);
             }
 
             @Override
@@ -50,9 +50,8 @@ public class PageSwitchHelper {
     }
 
     private static void realJumpToMain() {
-        Intent intent = new Intent(GlobalInfo.getContext()
-                , MainActivity.class);
-        GlobalInfo.getContext().startActivity(intent);
+        Intent intent = new Intent(GlobalInfo.getGlobalContext(), MainActivity.class);
+        GlobalInfo.getGlobalContext().startActivity(intent);
     }
 
     private static void realJumpToLogin(){

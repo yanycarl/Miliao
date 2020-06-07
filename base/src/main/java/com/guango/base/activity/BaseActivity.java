@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected LinkedList<BaseActivity> activityStack;
+    public static LinkedList<BaseActivity> activityStack;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
     }
 
-    protected void closeAllActivity(){
+    public static void closeAllActivity(){
         for(BaseActivity activity: activityStack){
             activity.finish();
         }

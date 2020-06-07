@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.guango.base.activity.BaseActivity;
 import com.guango.base.model.SearchFriendResponse;
 import com.guango.base.model.SimpleUserInfo;
 import com.guango.base.utilities.StringUtil;
@@ -19,7 +20,7 @@ import com.guango.base.utilities.StringUtil;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class NewFriendActivity extends AppCompatActivity implements View.OnClickListener, PhonebookPresenter.IView, PhonebookAdapter.IView {
+public class NewFriendActivity extends BaseActivity implements View.OnClickListener, PhonebookPresenter.IView, PhonebookAdapter.IView {
 
     EditText mInput;
     View mCommit;
@@ -50,6 +51,10 @@ public class NewFriendActivity extends AppCompatActivity implements View.OnClick
         mAdapter = new SearchFriendAdapter(this);
         mList.setLayoutManager(new LinearLayoutManager(this));
         mList.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void initViews() {
     }
 
 

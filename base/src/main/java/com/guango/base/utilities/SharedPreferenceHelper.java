@@ -86,4 +86,11 @@ public class SharedPreferenceHelper {
         String json = preferences.getString(SP_KEY, "{}");
         return gson.fromJson(json, DataModel.class);
     }
+
+    public static void cleanData(){
+        SharedPreferences preferences = GlobalInfo.getGlobalContext().getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.clear();
+        editor.apply();
+    }
 }

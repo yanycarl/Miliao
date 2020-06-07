@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 
 import androidx.lifecycle.Observer;
 
+import com.guango.base.exception.MyUnCaughtExceptionHandler;
 import com.guango.base.model.MessageGroupModel;
 import com.guango.base.model.UserInfo;
 import com.guango.base.store.DataCenter;
@@ -15,12 +16,15 @@ import com.guango.miliao.utils.PageSwitchHelper;
 import com.guango.phonebook.PhonebookService;
 import com.guango.voice.VoiceReceiver;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        Thread.setDefaultUncaughtExceptionHandler(new MyUnCaughtExceptionHandler());
 
         VoiceReceiver receiver = new VoiceReceiver();
         IntentFilter intent = new IntentFilter();
@@ -41,7 +45,11 @@ public class MyApplication extends Application {
             GlobalInfo.dataCenter.phonebook.setValue(list2);
         }
 
-        GlobalInfo.myName = model.getmUsername();
+        try {
+            GlobalInfo.myName = model.getmUsername();
+        }catch (Exception e){
+            //Ignore
+        }
 
         GlobalInfo.dataCenter.messageGroupModels.observeForever(new Observer<LinkedList<MessageGroupModel>>() {
             @Override

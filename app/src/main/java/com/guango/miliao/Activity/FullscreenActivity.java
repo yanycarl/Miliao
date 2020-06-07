@@ -32,14 +32,13 @@ public class FullscreenActivity extends BaseActivity {
     @Override
     protected void initData() {
 
-        GlobalInfo.setContext(this);
-
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 if (GlobalInfo.myName == null) {
                     ThreadHelper.runTask(new LoginTask());
+                    FullscreenActivity.this.finish();
                     return;
                 }
 
@@ -47,6 +46,7 @@ public class FullscreenActivity extends BaseActivity {
                 Intent intent = new Intent(FullscreenActivity.this
                         , MainActivity.class);
                 startActivity(intent);
+                FullscreenActivity.this.finish();
             }
         }, 2000);
     }

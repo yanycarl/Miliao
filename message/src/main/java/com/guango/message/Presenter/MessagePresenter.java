@@ -1,13 +1,21 @@
 package com.guango.message.Presenter;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Process;
 
+import com.guango.base.Interface.IUserInfo;
 import com.guango.base.Interface.MessageFetchCallback;
+import com.guango.base.activity.BaseActivity;
 import com.guango.base.model.MessageFetchResponse;
 import com.guango.base.model.MessageGroupModel;
 import com.guango.base.model.MessageModel;
 import com.guango.base.model.UserInfo;
 import com.guango.base.store.GlobalInfo;
+import com.guango.base.utilities.SharedPreferenceHelper;
 import com.guango.base.utilities.ThreadHelper;
 import com.guango.message.Task.FetchMessageTask;
 import com.guango.network.Fetcher.MessageFetcher;
@@ -16,6 +24,9 @@ import com.guango.router.RouterMap;
 import java.util.LinkedList;
 
 public class MessagePresenter {
+
+    private static String url = "";
+    private static boolean versionHasNotShown = true;
 
     public static void openMessage(int groupId) {
         LinkedList<MessageModel> list = GlobalInfo.dataCenter.messageGroupModels.getValue().get(groupId).getMessageGroup();
@@ -81,8 +92,63 @@ public class MessagePresenter {
                 resolveResponse(response);
                 resolveResponseForRequest(response);
                 resolveResponseForVoice(response);
+                resolveResponseForNewFriend(response);
+                resolveResponseForNewVersion(response);
             }
         });
+    }
+
+    private static DialogInterface.OnClickListener backDialogListener = new DialogInterface.OnClickListener() {
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            if (which == -1) {
+                Uri uri = Uri.parse(url);
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                GlobalInfo.getGlobalContext().startActivity(intent);
+                BaseActivity.closeAllActivity();
+            } else {
+                BaseActivity.closeAllActivity();
+            }
+            SharedPreferenceHelper.cleanData();
+            Process.killProcess(Process.myPid());
+        }
+    };
+
+    private static void resolveResponseForNewVersion(MessageFetchResponse response) {
+        if (versionHasNotShown && response.getVersion() != null) {
+            versionHasNotShown = false;
+            AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.activityStack.getFirst());
+            builder.setTitle("有新的版本发布，当前版本将不可用");
+            url = response.getVersion();
+            builder.setCancelable(false);
+            builder.setPositiveButton("我要升级", backDialogListener);
+            builder.setNegativeButton("不升级了", backDialogListener);
+            builder.show();
+        }
+    }
+
+    private static void resolveResponseForNewFriend(MessageFetchResponse body) {
+        if (body.getNewFriends() == null) {
+            return;
+        }
+        LinkedList<String> newFriends = body.getNewFriends();
+        LinkedList<UserInfo> address = GlobalInfo.dataCenter.phonebook.getValue();
+        if (address == null) {
+            return;
+        }
+        for (String name : newFriends) {
+            for (UserInfo info : address) {
+                if (info.getName().equals(name)) {
+                    return;
+                }
+            }
+            UserInfo userInfo = new UserInfo();
+            userInfo.setName(name);
+            userInfo.setType(UserInfo.CONTACT_TYPE.DONE);
+            address.addFirst(userInfo);
+        }
+        GlobalInfo.dataCenter.phonebook.postValue(address);
     }
 
     private static void resolveResponseForVoice(MessageFetchResponse body) {

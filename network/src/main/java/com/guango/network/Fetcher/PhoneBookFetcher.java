@@ -23,7 +23,7 @@ public class PhoneBookFetcher {
                     public void onResponse(Call<SearchFriendResponse> call, Response<SearchFriendResponse> response) {
                         if (response.code() != 200) {
                             Log.d("yanyao -- friend search", response.message());
-                            Toast.makeText(GlobalInfo.getContext(), "没有查到此人", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GlobalInfo.getGlobalContext(), "没有查到此人", Toast.LENGTH_SHORT).show();
                         } else {
                             callback.onGotSearchResult(response.body());
                         }
@@ -44,9 +44,9 @@ public class PhoneBookFetcher {
                     public void onResponse(Call<RequestFriendResponse> call, Response<RequestFriendResponse> response) {
                         if (response.code() != 200) {
                             Log.d("yanyao -- friend request", response.message());
-                            Toast.makeText(GlobalInfo.getContext(), "申请失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GlobalInfo.getGlobalContext(), "申请失败", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(GlobalInfo.getContext(), "申请成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GlobalInfo.getGlobalContext(), "申请成功", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -64,20 +64,20 @@ public class PhoneBookFetcher {
                     @Override
                     public void onResponse(Call<RequestFriendResponse> call, Response<RequestFriendResponse> response) {
                         if (response.code() != 200) {
-                            Toast.makeText(GlobalInfo.getContext(), "回复失败", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GlobalInfo.getGlobalContext(), "回复失败", Toast.LENGTH_SHORT).show();
                         } else {
                             if(status) {
                                 callback.onGotReplyResult(true);
                             }else {
                                 callback.onGotReplyResult(true);
                             }
-                            Toast.makeText(GlobalInfo.getContext(), "回复成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(GlobalInfo.getGlobalContext(), "回复成功", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<RequestFriendResponse> call, Throwable t) {
-                        Toast.makeText(GlobalInfo.getContext(), "回复失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(GlobalInfo.getGlobalContext(), "回复失败", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
